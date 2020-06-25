@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 import {Header} from "./Header";
 import {Footer} from "./Footer";
-import {DatasetContent} from "./DatasetContent";
+import {DatasetDimOpt} from "./DatasetDimOpt";
+import MockCodeBook from "./assets/mock_responses/MockCodeBook";
 
 
 export class Dataset extends React.Component {
@@ -34,38 +35,7 @@ export class Dataset extends React.Component {
             // Actual Response
             demoResponse = await response.json();
         } catch {
-            demoResponse = {
-                "dataset": {
-                    "name": "Example",
-                    "digest": "24aca09d162196ce64c5801321fb31e8eab8670dae0a4a2859f560e979bcc556",
-                    "description": "Example dataset for validation",
-                    "size": 7,
-                    "ruleRootVariable": "city"
-                },
-                "codebook": [{
-                    "name": "city",
-                    "label": "City",
-                    "codes": ["0", "1", "2"],
-                    "labels": ["London", "Liverpool", "Belfast"]
-                }, {
-                    "name": "sex",
-                    "label": "Sex",
-                    "codes": ["0", "1"],
-                    "labels": ["Male", "Female"]
-                }, {
-                    "name": "siblings",
-                    "label": "Number of siblings",
-                    "codes": ["0", "1", "2", "3", "4", "5", "6"],
-                    "labels": ["No siblings", "1 sibling", "2 siblings", "3 siblings", "4 siblings", "5 siblings", "6 or more siblings"]
-                }, {
-                    "name": "siblings_3",
-                    "label": "Number of siblings (3 mappings)",
-                    "codes": ["0", "1-2", "3+"],
-                    "labels": ["No siblings", "1 or 2 siblings", "3 or more siblings"],
-                    "mapFrom": ["siblings"],
-                    "mapFromCodes": ["0", "1-2", "", "3+", "", "", ""]
-                }]
-            }
+            demoResponse = MockCodeBook;
         }
         this.setState(({codeBook: demoResponse}));
 
@@ -76,32 +46,7 @@ export class Dataset extends React.Component {
         if (this.state.codeBook != null && this.state.codeBook.codebook != null) {
             let codeBook = this.state.codeBook.codebook;
             for (let i = 0; i < codeBook.length; i++) {
-                let singleDim = <li id="filter-option"
-                                    className="white-background margin-left-md--2 margin-right-md--2 margin-right-sm--1 margin-left-sm--1 filter-overview__add">
-                    <div className="col--lg-56 min-height--10 padding-left-sm--0 padding-left-md--1">
-                        <div className="col col--md-8 col--lg-8 min-height--4">
-                            <a className="filter-overview__link--add"
-                               href="/filters/c53f1a7c-ecf1-4abf-a104-f8f00cd57994/dimensions/aggregate"><span
-                                className="dimension-button btn btn--tertiary margin-left-md--2 margin-left-sm--1  font-weight-700 ">Add <span
-                                className="visuallyhidden">{codeBook[i].label}</span></span></a>
-                        </div>
-                        <div
-                            className="dimension-name col col--md-11 col--lg-14 margin-left-sm--6 height-sm--3 height-md--6 overflow--hidden margin-top-md--3 margin-bottom-sm--2">
-                            <strong><span id="filter-option-label"
-                                          className="font-size-16">{codeBook[i].label}</span></strong></div>
-                        <div id="number-added-aggregate" className="col col--md-20 col--lg-30">
-                            <div
-                                className="font-size--16 height-sm--3 height-md--10 nowrap-sm vertical-align-middle margin-left-sm--4 list--ellipses-sm overflow--hidden">
-                                <div
-                                    className="height-sm--3 max-height-md--9 vertical-align-middle__contents--md list--ellipses-md">
-                                    <ul className="list list--pipe-seperated list--pipe-seperated-ellipses">
-                                        <span>Nothing added</span>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>;
+                let singleDim = <DatasetDimOpt label={codeBook[i].label}/>;
                 dimensions.push(singleDim)
             }
         }
@@ -128,7 +73,6 @@ export class Dataset extends React.Component {
                         </form>
                     </div>
                 </div>
-                <DatasetContent/>
                 <Footer/>
             </div>
         )

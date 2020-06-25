@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './App.css';
+import MockDatasets from "./assets/mock_responses/MockDatasets";
 
 export class Content extends React.Component {
     // ONS instance
@@ -47,15 +48,7 @@ export class Content extends React.Component {
             data = await response.json();
         } catch {
             // Fake response
-            data = [
-                {
-                    "name": "Example",
-                    "digest": "24aca09d162196ce64c5801321fb31e8eab8670dae0a4a2859f560e979bcc556",
-                    "description": "Example dataset for validation",
-                    "size": 7,
-                    "ruleRootVariable": "city"
-                }
-            ];
+            data = MockDatasets;
         }
 
         this.setState(({results: data}));
