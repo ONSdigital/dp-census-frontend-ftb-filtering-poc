@@ -1,25 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Dataset} from "./Dataset";
+import {DatasetList} from "./DatasetList";
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 function App() {
+    console.log("should route");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <BrowserRouter>
+          <div>
+              <Switch>
+                  <Route path="/dp-census-frontend-ftb-filtering-poc/dataset/:name" component={Dataset}/>
+                  <Route path="/dp-census-frontend-ftb-filtering-poc/" component={DatasetList} exact/>
+              </Switch>
+          </div>
+      </BrowserRouter>
   );
 }
 

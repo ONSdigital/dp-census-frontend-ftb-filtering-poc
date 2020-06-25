@@ -1,4 +1,10 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About the project
+This is a Proof of Concept (POC) specifically this is a PROTOTYPE not production code, this code should never its way to live. 
+If it does something has gone seriously wrong. Not only is this a POC prototype but this is part of an Alpha project.
+
+The goal of this POC is to show whether Flexible Table Builder (FTB) is capable of supporting filtering data or not.
+Along the way this project should highlight any issues with FTB being used in this way. If any issues are found then they should get resolved
+then this POC can continue. Ideally by the end of this POC a user should be able to query FTB and filter.
 
 ## Available Scripts
 
@@ -26,6 +32,10 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run deploy`
+
+Builds the app to the gh-pages branch and will auto push. This results in the GitHib pages being updated. Treat this as a deploy to production.
 
 ### `npm run eject`
 
