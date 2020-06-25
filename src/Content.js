@@ -3,6 +3,17 @@ import React from 'react';
 import './App.css';
 import MockDatasets from "./assets/mock_responses/MockDatasets";
 
+function WarningBanner(props) {
+    if (!props.warn) {
+        return null;
+    }
+    return (
+        <div className="warning wrapper">
+            Connection to ONS FTB instance failed, using Mock data on the frontend instead
+        </div>
+    );
+}
+
 export class Content extends React.Component {
     // ONS instance
     //ftbDomain = "http://99.80.12.125:10100/v6";
@@ -10,14 +21,17 @@ export class Content extends React.Component {
     ftbDomain = "http://99.80.12.125:10100/v6";
 
     state = {
-        results: []
+        "results": [],
+        "warning": false
+
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            searchString: '',
-            results: []
+            "searchString": '',
+            "results": [],
+            "warning": false
         };
     }
 
@@ -25,33 +39,27 @@ export class Content extends React.Component {
         this.getDatasets();
     }
 
-    setSearchInput(input) {
-        this.setState({searchString: input});
-    }
-
-    handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const submitSuccess = await this.submitForm();
-        this.setState({submitSuccess});
-    };
-
     async getDatasets() {
         // Actual request
         const requestOptions = {
             method: 'GET'
         };
+        let connected = false;
         let data;
         try {
             const response = await fetch(this.ftbDomain + "/datasets", requestOptions);
             // Actual Response
             data = await response.json();
+            connected = true;
         } catch {
             // Fake response
+            connected = false;
             data = MockDatasets;
         }
 
-        this.setState(({results: data}));
+        this.setState(({results: data,
+            warning: !connected
+        }));
 
         return true;
     }
@@ -72,7 +80,8 @@ export class Content extends React.Component {
 
         return (
             <div className="wrapper">
-                <h1>List of all datasets loaded in from FTB</h1>
+                <WarningBanner warn={this.state.warning}/>
+                <h1 className="wrapper">List of all datasets loaded in from FTB</h1>
                 <div className="search-results">
                     <ul className="list--neutral flush">{displayList}</ul>
                 </div>

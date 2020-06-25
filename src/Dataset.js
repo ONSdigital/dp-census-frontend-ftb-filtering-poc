@@ -6,6 +6,16 @@ import {DatasetDimOpt} from "./DatasetDimOpt";
 import {DatasetFilterOptionMenu} from "./DatasetFilterOptionMenu";
 import MockCodeBook from "./assets/mock_responses/MockCodeBook";
 
+function WarningBanner(props) {
+    if (!props.warn) {
+        return null;
+    }
+    return (
+        <div className="warning wrapper">
+            Connection to ONS FTB instance failed, using Mock data on the frontend instead
+        </div>
+    );
+}
 
 export class Dataset extends React.Component {
 
@@ -18,7 +28,8 @@ export class Dataset extends React.Component {
         this.setState({
             "name": name,
             "codeBook": {},
-            "indexAddingDimOpt": -1
+            "indexAddingDimOpt": -1,
+            "warning": false
         });
         this.getCodeBook();
     }
@@ -30,15 +41,21 @@ export class Dataset extends React.Component {
         const requestOptions = {
             method: 'GET'
         };
+        let connected = false;
         let demoResponse;
         try {
             const response = await fetch(this.ftbDomain + "/codebook" + this.props.match.params.name, requestOptions);
             // Actual Response
             demoResponse = await response.json();
+            connected = true;
         } catch {
+            connected = false;
             demoResponse = MockCodeBook;
         }
-        this.setState(({codeBook: demoResponse}));
+        this.setState(({
+            codeBook: demoResponse,
+            warning: !connected
+        }));
 
     }
 
@@ -55,6 +72,7 @@ export class Dataset extends React.Component {
         return (
             <div>
                 <Header/>
+                <WarningBanner warn={this.state.warning}/>
                 <h1 className="wrapper">Dataset: {this.props.match.params.name}</h1>
                 <DatasetFilterOptionMenu dimensions={dimensions}/>
                 <Footer/>
