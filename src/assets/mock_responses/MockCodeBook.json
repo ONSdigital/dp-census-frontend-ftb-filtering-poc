@@ -1,0 +1,32 @@
+{
+  "dataset": {
+    "name": "Example",
+    "digest": "24aca09d162196ce64c5801321fb31e8eab8670dae0a4a2859f560e979bcc556",
+    "description": "Example dataset for validation",
+    "size": 7,
+    "ruleRootVariable": "city"
+  },
+  "codebook": [{
+    "name": "city",
+    "label": "City",
+    "codes": ["0", "1", "2"],
+    "labels": ["London", "Liverpool", "Belfast"]
+  }, {
+    "name": "sex",
+    "label": "Sex",
+    "codes": ["0", "1"],
+    "labels": ["Male", "Female"]
+  }, {
+    "name": "siblings",
+    "label": "Number of siblings",
+    "codes": ["0", "1", "2", "3", "4", "5", "6"],
+    "labels": ["No siblings", "1 sibling", "2 siblings", "3 siblings", "4 siblings", "5 siblings", "6 or more siblings"]
+  }, {
+    "name": "siblings_3",
+    "label": "Number of siblings (3 mappings)",
+    "codes": ["0", "1-2", "3+"],
+    "labels": ["No siblings", "1 or 2 siblings", "3 or more siblings"],
+    "mapFrom": ["siblings"],
+    "mapFromCodes": ["0", "1-2", "", "3+", "", "", ""]
+  }]
+}

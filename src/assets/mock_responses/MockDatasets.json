@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Example",
+    "digest": "24aca09d162196ce64c5801321fb31e8eab8670dae0a4a2859f560e979bcc556",
+    "description": "Example dataset for validation",
+    "size": 7,
+    "ruleRootVariable": "city"
+  }
+]
