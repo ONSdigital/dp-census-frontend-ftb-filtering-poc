@@ -2,8 +2,9 @@ import React from 'react';
 import './App.css';
 import {Header} from "./Header";
 import {Footer} from "./Footer";
-import {DatasetDimOpt} from "./DatasetDimOpt";
+import {DatasetDim} from "./DatasetDim";
 import {DatasetFilterOptionMenu} from "./DatasetFilterOptionMenu";
+import {DimensionOptSelector} from "./DimensionOptSelector";
 import MockCodeBook from "./assets/mock_responses/MockCodeBook";
 
 function WarningBanner(props) {
@@ -22,6 +23,8 @@ export class Dataset extends React.Component {
     state = {
         name: ""
     };
+
+    dimensionClickedFuncs = [];
 
     componentDidMount() {
         const {name} = this.props.match.params;
@@ -52,6 +55,19 @@ export class Dataset extends React.Component {
             connected = false;
             demoResponse = MockCodeBook;
         }
+
+        if (demoResponse != null && demoResponse.codebook != null) {
+            for (let i = 0; i < demoResponse.codebook.length; i++) {
+                this.dimensionClickedFuncs.push(
+                    () => {
+                        this.setState(
+                            {indexAddingDimOpt: i}
+                        )
+                    },
+                )
+            }
+        }
+
         this.setState(({
             codeBook: demoResponse,
             warning: !connected
@@ -61,20 +77,27 @@ export class Dataset extends React.Component {
 
     render() {
         let dimensions = [];
+        let dimOptSelector;
         if (this.state.codeBook != null && this.state.codeBook.codebook != null) {
             let codeBook = this.state.codeBook.codebook;
             for (let i = 0; i < codeBook.length; i++) {
-                let singleDim = <DatasetDimOpt label={codeBook[i].label}/>;
+                let singleDim = <DatasetDim label={codeBook[i].label} dimClicked={this.dimensionClickedFuncs[i]}/>;
                 dimensions.push(singleDim)
             }
+            console.log("this.state.indexAddingDimOpt >-1");
+            console.log(this.state.indexAddingDimOpt >-1);
+            dimOptSelector = <DimensionOptSelector showDim={this.state.indexAddingDimOpt >-1} dimCodeBook={this.state.codeBook.codebook[this.state.indexAddingDimOpt]}/>
         }
-
         return (
             <div>
                 <Header/>
                 <WarningBanner warn={this.state.warning}/>
                 <h1 className="wrapper">Dataset: {this.props.match.params.name}</h1>
-                <DatasetFilterOptionMenu dimensions={dimensions}/>
+                <DatasetFilterOptionMenu
+                    showDim={this.state.indexAddingDimOpt < 0}
+                    dimensions={dimensions}
+                />
+                {dimOptSelector}
                 <Footer/>
             </div>
         )

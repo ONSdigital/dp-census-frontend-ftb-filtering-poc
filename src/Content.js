@@ -50,16 +50,26 @@ export class Content extends React.Component {
             const response = await fetch(this.ftbDomain + "/datasets", requestOptions);
             // Actual Response
             data = await response.json();
-            connected = true;
+            console.log("response.status")
+            console.log(response.status)
+            if (response.status == 200) {
+                connected = true;
+            } else {
+                connected = false;
+            }
+
         } catch {
             // Fake response
             connected = false;
+
+        }
+        if (!connected) {
             data = MockDatasets;
         }
-
-        this.setState(({results: data,
+        this.setState({
+            results: data,
             warning: !connected
-        }));
+        });
 
         return true;
     }

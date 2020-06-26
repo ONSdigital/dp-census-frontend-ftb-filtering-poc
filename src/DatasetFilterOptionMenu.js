@@ -4,13 +4,16 @@ import './App.css';
 export class DatasetFilterOptionMenu extends React.Component {
 
     render() {
+        if (!this.props.showDim) {
+            return null;
+        }
         return (
             <div className="wrapper adjust-font-size--16 page-content link-adjust background--gallery">
                 <ul className="list--neutral filter-overview">
                     <li className="margin-left--0 padding-bottom--2 padding-top--0 padding-right--2 width-lg--56">
-                        <a className="float-el--right-md float-el--right-sm float-el--right-lg"
+                        <button className="float-el--right-md float-el--right-sm float-el--right-lg"
                            href="/filters/c53f1a7c-ecf1-4abf-a104-f8f00cd57994/dimensions/clear-all">Clear
-                            filters</a>
+                            filters</button>
                     </li>
                     {this.props.dimensions}
                 </ul>

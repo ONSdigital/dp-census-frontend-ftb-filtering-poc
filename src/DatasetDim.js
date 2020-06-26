@@ -2,7 +2,11 @@ import React from 'react';
 import './App.css';
 
 
-export class DatasetDimOpt extends React.Component {
+export class DatasetDim extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return <li id="filter-option"
@@ -10,7 +14,7 @@ export class DatasetDimOpt extends React.Component {
             <div className="col--lg-56 min-height--10 padding-left-sm--0 padding-left-md--1">
                 <div className="col col--md-8 col--lg-8 min-height--4">
                     <a className="filter-overview__link--add"
-                       href="/filters/c53f1a7c-ecf1-4abf-a104-f8f00cd57994/dimensions/aggregate"><span
+                       href="#" onClick={this.props.dimClicked}><span
                         className="dimension-button btn btn--tertiary margin-left-md--2 margin-left-sm--1  font-weight-700 ">Add <span
                         className="visuallyhidden">{this.props.label}</span></span></a>
                 </div>
