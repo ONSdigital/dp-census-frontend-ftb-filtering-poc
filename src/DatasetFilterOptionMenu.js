@@ -20,9 +20,10 @@ export class DatasetFilterOptionMenu extends React.Component {
                 <div className="btn--no-click padding-bottom--4 padding-left--2 padding-top--2">
                     <div className="filter-overview__error-container" id="error-container"></div>
                     <form method="post" action="/filters/c53f1a7c-ecf1-4abf-a104-f8f00cd57994/submit">
-                        <input id="preview-download" type="submit" value="Apply filters"
+                        <input id="preview-download" type="button" value="Apply filters"
                                className="btn btn--primary btn--primary-disabled btn--thick btn--wide btn--big btn--focus margin-right--2 font-weight-700 font-size--17"
-                               name="preview-and-download"/>
+                               name="preview-and-download"
+                        />
                     </form>
                 </div>
             </div>)

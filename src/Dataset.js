@@ -7,6 +7,8 @@ import {DatasetFilterOptionMenu} from "./DatasetFilterOptionMenu";
 import {DimensionOptSelector} from "./DimensionOptSelector";
 import MockCodeBook from "./assets/mock_responses/MockCodeBook";
 
+
+// Code: [vars,vars]
 function WarningBanner(props) {
     if (!props.warn) {
         return null;
@@ -26,13 +28,26 @@ export class Dataset extends React.Component {
 
     dimensionClickedFuncs = [];
 
+    constructor(props) {
+        super(props);
+        this.filterUpdateFunc = this.filterUpdateFunc.bind(this);
+    }
+
+    filterUpdateFunc(code, vars) {
+        let newFilter = {[code]: vars};
+        let filterObj = Object.assign(this.state.filter, newFilter);
+        this.setState({filter: filterObj})
+    }; // TODO implement filter updateFuncs - save which codes and vars selected in this state
+
+
     componentDidMount() {
         const {name} = this.props.match.params;
         this.setState({
             "name": name,
             "codeBook": {},
             "indexAddingDimOpt": -1,
-            "warning": false
+            "warning": false,
+            "filter": {}
         });
         this.getCodeBook();
     }
@@ -59,12 +74,17 @@ export class Dataset extends React.Component {
         if (demoResponse != null && demoResponse.codebook != null) {
             for (let i = 0; i < demoResponse.codebook.length; i++) {
                 this.dimensionClickedFuncs.push(
-                    () => {
+                    () => { // TODO implement closed
                         this.setState(
-                            {indexAddingDimOpt: i}
+                            {indexAddingDimOpt: i} // If open then which index if closed set to -1
                         )
                     },
-                )
+                    // (open) => { // TODO implement closed
+                    //     this.setState(
+                    //         {indexAddingDimOpt: open ? i : -1} // If open then which index if closed set to -1
+                    //     )
+                    // },
+                );
             }
         }
 
@@ -84,9 +104,10 @@ export class Dataset extends React.Component {
                 let singleDim = <DatasetDim label={codeBook[i].label} dimClicked={this.dimensionClickedFuncs[i]}/>;
                 dimensions.push(singleDim)
             }
-            console.log("this.state.indexAddingDimOpt >-1");
-            console.log(this.state.indexAddingDimOpt >-1);
-            dimOptSelector = <DimensionOptSelector showDim={this.state.indexAddingDimOpt >-1} dimCodeBook={this.state.codeBook.codebook[this.state.indexAddingDimOpt]}/>
+            dimOptSelector = <DimensionOptSelector showDim={this.state.indexAddingDimOpt > -1}
+                                                   dimCodeBook={this.state.codeBook.codebook[this.state.indexAddingDimOpt]}
+                                                   filterUpdate={this.filterUpdateFunc}
+            />
         }
         return (
             <div>

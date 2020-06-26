@@ -2,26 +2,35 @@ import React from 'react';
 import './App.css';
 
 export class DimensionOptSelector extends React.Component {
+    dimCodeBook;
+    showDim;
 
+    // TODO add all codes to state (maybe make an object in state)
+    constructor(props) {
+        super(props);
+        // this.checkChanged = this.checkChanged.bind(this);
+        this.saveSelection = this.saveSelection.bind(this);
+    }
 
     checkChanged(code, e) {
-        console.log('code');
-        console.log(code);
-        console.log("e");
-        console.log(e);
-        console.log("e.target.checked");
-        console.log(e.target.checked);
+        code = code.toString();
         this.setState({
-            [this.props[code]]: e.target.checked
-        });
+            [code]: e.target.checked
+        },);
+
     }
 
     saveSelection() {
-
+        let codeValues = [];
+        for (const property in this.state) {
+            if (property == true) {
+                codeValues.push(property)
+            }
+        }
+        this.props.filterUpdate(this.props.dimCodeBook.name, codeValues);
     }
 
     render() {
-        console.log('rerender')
         if (!this.props.showDim) {
             return null;
         }
