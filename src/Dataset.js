@@ -31,6 +31,7 @@ export class Dataset extends React.Component {
     constructor(props) {
         super(props);
         this.filterUpdateFunc = this.filterUpdateFunc.bind(this);
+        this.closeDimensionOptMenu = this.closeDimensionOptMenu.bind(this);
     }
 
     filterUpdateFunc(code, vars) {
@@ -39,6 +40,11 @@ export class Dataset extends React.Component {
         this.setState({filter: filterObj})
     }; // TODO implement filter updateFuncs - save which codes and vars selected in this state
 
+    closeDimensionOptMenu(){
+        this.setState(
+            {indexAddingDimOpt: -1}
+        )
+    }
 
     componentDidMount() {
         const {name} = this.props.match.params;
@@ -107,6 +113,7 @@ export class Dataset extends React.Component {
             dimOptSelector = <DimensionOptSelector showDim={this.state.indexAddingDimOpt > -1}
                                                    dimCodeBook={this.state.codeBook.codebook[this.state.indexAddingDimOpt]}
                                                    filterUpdate={this.filterUpdateFunc}
+                                                   closeDimensionOptMenu={this.closeDimensionOptMenu}
             />
         }
         return (

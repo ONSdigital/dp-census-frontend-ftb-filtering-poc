@@ -50,9 +50,7 @@ export class Content extends React.Component {
             const response = await fetch(this.ftbDomain + "/datasets", requestOptions);
             // Actual Response
             data = await response.json();
-            console.log("response.status")
-            console.log(response.status)
-            if (response.status == 200) {
+            if (response.status === 200) {
                 connected = true;
             } else {
                 connected = false;

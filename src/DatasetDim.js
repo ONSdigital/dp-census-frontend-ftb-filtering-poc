@@ -4,10 +4,6 @@ import './App.css';
 
 export class DatasetDim extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return <li id="filter-option"
                    className="white-background margin-left-md--2 margin-right-md--2 margin-right-sm--1 margin-left-sm--1 filter-overview__add">

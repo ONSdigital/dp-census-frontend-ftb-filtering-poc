@@ -5,29 +5,34 @@ export class DimensionOptSelector extends React.Component {
     dimCodeBook;
     showDim;
 
-    // TODO add all codes to state (maybe make an object in state)
     constructor(props) {
         super(props);
         // this.checkChanged = this.checkChanged.bind(this);
         this.saveSelection = this.saveSelection.bind(this);
+        this.state = {
+            filters: {}
+        }
     }
 
     checkChanged(code, e) {
         code = code.toString();
         this.setState({
-            [code]: e.target.checked
+            filters: {
+                [code]: e.target.checked
+            }
         },);
 
     }
 
     saveSelection() {
         let codeValues = [];
-        for (const property in this.state) {
-            if (property == true) {
+        for (const property in this.state.filters) {
+            if (property === true) {
                 codeValues.push(property)
             }
         }
         this.props.filterUpdate(this.props.dimCodeBook.name, codeValues);
+        this.props.closeDimensionOptMenu();
     }
 
     render() {
@@ -65,7 +70,7 @@ export class DimensionOptSelector extends React.Component {
                     <input className="btn btn--link underline-link js-filter remove-list js-hidden" type="submit"
                            value="Remove all" name="remove-all" id="remove-all"
                            aria-label="Remove all Aggregate in this list from your saved items"/>
-                    <input name="q" type="hidden" value="/" aria-contols="checkboxes-0"/>
+                    <input name="q" type="hidden" value="/" aria-controls="checkboxes-0"/>
                     {dimensions}
                 </fieldset>
                 <div className="margin-top js-hidden">
