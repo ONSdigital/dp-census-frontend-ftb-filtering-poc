@@ -8,7 +8,6 @@ import {Footer} from "./Footer";
 export class DatasetList extends React.Component {
 
     render() {
-        console.log("got in here");
         return <div>
             <Header/>
             <Content/>

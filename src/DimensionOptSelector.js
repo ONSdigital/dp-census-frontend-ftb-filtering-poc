@@ -10,28 +10,25 @@ export class DimensionOptSelector extends React.Component {
         // this.checkChanged = this.checkChanged.bind(this);
         this.saveSelection = this.saveSelection.bind(this);
         this.state = {
-            filters: {}
-        }
+            filters: this.props.filters
+
+        };
     }
 
     checkChanged(code, e) {
         code = code.toString();
+        let filters = this.state.filters;
+        filters[code] = e.target.checked;
         this.setState({
-            filters: {
-                [code]: e.target.checked
-            }
-        },);
+            filters: filters
+        },()=>{
+            //debug function
+        });
 
     }
 
     saveSelection() {
-        let codeValues = [];
-        for (const property in this.state.filters) {
-            if (property === true) {
-                codeValues.push(property)
-            }
-        }
-        this.props.filterUpdate(this.props.dimCodeBook.name, codeValues);
+        this.props.filterUpdate(this.props.dimCodeBook.name, this.state.filters);
         this.props.closeDimensionOptMenu();
     }
 
@@ -48,7 +45,9 @@ export class DimensionOptSelector extends React.Component {
                            name={this.props.dimCodeBook.codes[i]}
                            onChange={(e) => {
                                this.checkChanged(this.props.dimCodeBook.codes[i], e)
-                           }}/>
+                           }}
+                           checked={this.state.filters[this.props.dimCodeBook.codes[i]]}
+                    />
                     <label id={this.props.dimCodeBook.codes[i]} className="checkbox__label" htmlFor={"id" + i}>
                         {this.props.dimCodeBook.labels[i]}
                     </label>
