@@ -8,7 +8,6 @@ import {DimensionOptSelector} from "./DimensionOptSelector";
 import MockCodeBook from "./assets/mock_responses/MockCodeBook";
 
 
-// Code: [vars,vars]
 function WarningBanner(props) {
     if (!props.warn) {
         return null;
@@ -27,15 +26,51 @@ export class Dataset extends React.Component {
     };
 
     dimensionClickedFuncs = [];
+    ftbDomain = "http://99.80.12.125:10100/v6";
 
     constructor(props) {
         super(props);
         this.getFilterSelection = this.getFilterSelection.bind(this);
         this.filterUpdateFunc = this.filterUpdateFunc.bind(this);
         this.closeDimensionOptMenu = this.closeDimensionOptMenu.bind(this);
+        this.getFilterQuery = this.getFilterQuery.bind(this);
         this.state = {
-            filter: {}
+            filter: {},
+            ruleRootVariable: ""
         }
+    }
+
+    getFilterQuery() {
+        // ruleRootVar has to be the first element in query
+        let filterQueryPart1 = `dim=${this.state.ruleRootVariable}`;
+        let filterQueryPart2 = `&incl=${this.state.ruleRootVariable},`; // Don't need to be the first item
+        for (const code in this.state.filter[this.state.ruleRootVariable]) {
+            if (this.state.filter[this.state.ruleRootVariable][code] === true) {
+                filterQueryPart2 += `${code},`;
+            }
+        }
+        // remove any trailing comma
+        filterQueryPart2 = filterQueryPart2.replace(/,\s*$/, "");
+
+        for (const dim in this.state.filter) {
+            if (dim === this.state.ruleRootVariable) {
+                continue;
+            }
+            let dimOptString = "";
+            for (const dimOpt in this.state.filter[dim]) {
+                if (this.state.filter[dim][dimOpt] === true) {
+                    dimOptString += `${dimOpt},`;
+                }
+            }
+            if (dimOptString !== "") {
+                filterQueryPart1 += `&dim=${dim}`;
+                filterQueryPart2 += `&incl=${dim},${dimOptString}`;
+                // remove any trailing comma
+                filterQueryPart2 = filterQueryPart2.replace(/,\s*$/, "");
+            }
+        }
+        console.log(`FILTER OUTPUT IS: ${filterQueryPart1}${filterQueryPart2}`);
+        return filterQueryPart1 + filterQueryPart2;
     }
 
     filterUpdateFunc(code, filter) {
@@ -46,8 +81,18 @@ export class Dataset extends React.Component {
     }; // TODO implement filter updateFuncs - save which codes and vars selected in this state
 
     closeDimensionOptMenu() {
+        let canFilter = false;
+        for (const dimOpt in this.state.filter[this.state.ruleRootVariable]) {
+            if (this.state.filter[this.state.ruleRootVariable][dimOpt] === true) {
+                canFilter = true;
+            }
+        }
+
         this.setState(
-            {indexAddingDimOpt: -1}
+            {
+                indexAddingDimOpt: -1,
+                canFilter: canFilter
+            }
         )
     }
 
@@ -68,7 +113,8 @@ export class Dataset extends React.Component {
         //curl -i - h Authorization: Bearer ${AUTH_TOKEN} "http://99.80.12.125:10100/v6/codebook/Example"
         // Actual request
         const requestOptions = {
-            method: 'GET'
+            method: 'GET',
+            Authorization: `Bearer ${process.env.REACT_APP_NOT_SECRET_CODE}`
         };
         let connected = false;
         let demoResponse;
@@ -76,10 +122,16 @@ export class Dataset extends React.Component {
             const response = await fetch(this.ftbDomain + "/codebook" + this.props.match.params.name, requestOptions);
             // Actual
             demoResponse = await response.json();
-            connected = true;
+            if (response.status === 200) {
+                connected = true;
+            } else {
+                connected = false;
+            }
         } catch {
             connected = false;
-            demoResponse = MockCodeBook;
+        }
+        if (!connected) {
+            demoResponse = MockCodeBook
         }
 
         if (demoResponse != null && demoResponse.codebook != null) {
@@ -101,7 +153,8 @@ export class Dataset extends React.Component {
 
         this.setState(({
             codeBook: demoResponse,
-            warning: !connected
+            warning: !connected,
+            ruleRootVariable: demoResponse.dataset.ruleRootVariable
         }));
 
     }
@@ -111,7 +164,7 @@ export class Dataset extends React.Component {
         if (this.state.filter[this.state.codeBook.codebook[index].name] != null) {
             let filterName = this.state.codeBook.codebook[index].name;
             for (const code in this.state.filter[filterName]) {
-                if( this.state.filter[filterName][code] === true){
+                if (this.state.filter[filterName][code] === true) {
                     const indexOfCode = this.state.codeBook.codebook[index].codes.indexOf(code);
                     filterSelection.push(this.state.codeBook.codebook[index].labels[indexOfCode])
                 }
@@ -137,8 +190,8 @@ export class Dataset extends React.Component {
                 dimensions.push(singleDim)
             }
             let filtersSelected = {};
-            if (this.state.codeBook.codebook[this.state.indexAddingDimOpt] != null && this.state.filter[this.state.codeBook.codebook[this.state.indexAddingDimOpt]] != null) {
-                filtersSelected = this.state.filter[this.state.codeBook.codebook[this.state.indexAddingDimOpt]]
+            if (this.state.codeBook.codebook[this.state.indexAddingDimOpt] != null && this.state.filter[this.state.codeBook.codebook[this.state.indexAddingDimOpt].name] != null) {
+                filtersSelected = this.state.filter[this.state.codeBook.codebook[this.state.indexAddingDimOpt].name]
             }
             dimOptSelector = <DimensionOptSelector showDim={this.state.indexAddingDimOpt > -1}
                                                    dimCodeBook={this.state.codeBook.codebook[this.state.indexAddingDimOpt]}
@@ -152,9 +205,13 @@ export class Dataset extends React.Component {
                 <Header/>
                 <WarningBanner warn={this.state.warning}/>
                 <h1 className="wrapper">Dataset: {this.props.match.params.name}</h1>
+                <div className="wrapper"> rootRuleVariable must be selected: {this.state.ruleRootVariable}</div>
                 <DatasetFilterOptionMenu
+                    datasetName={this.props.match.params.name}
                     showDim={this.state.indexAddingDimOpt < 0}
                     dimensions={dimensions}
+                    getFilterQuery={this.getFilterQuery}
+                    canFilter={this.state.canFilter}
                 />
                 {dimOptSelector}
                 <Footer/>

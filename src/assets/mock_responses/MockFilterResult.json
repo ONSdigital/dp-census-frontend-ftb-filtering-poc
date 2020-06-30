@@ -1,0 +1,23 @@
+{
+  "datasetDigest": "6fc4987e40b3ea7a0ca0f4a365f050ee6491c204abaaef6c7471be1e3da7f743",
+  "dimensions": [
+    {
+      "name": "city"
+    },
+    {
+      "name": "siblings",
+      "catOffsetLenPairs": [
+        1,
+        2
+      ]
+    }
+  ],
+  "counts": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  ]
+}

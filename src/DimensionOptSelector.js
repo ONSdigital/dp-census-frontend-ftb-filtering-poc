@@ -15,13 +15,20 @@ export class DimensionOptSelector extends React.Component {
         };
     }
 
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.dimCodeBook !== this.props.dimCodeBook) {
+            this.setState({filters: this.props.filters})
+        }
+    }
+
     checkChanged(code, e) {
         code = code.toString();
         let filters = this.state.filters;
         filters[code] = e.target.checked;
         this.setState({
             filters: filters
-        },()=>{
+        }, () => {
             //debug function
         });
 

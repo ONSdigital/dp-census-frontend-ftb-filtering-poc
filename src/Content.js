@@ -42,7 +42,8 @@ export class Content extends React.Component {
     async getDatasets() {
         // Actual request
         const requestOptions = {
-            method: 'GET'
+            method: 'GET',
+            Authorization: `Bearer ${process.env.REACT_APP_NOT_SECRET_CODE}`
         };
         let connected = false;
         let data;
