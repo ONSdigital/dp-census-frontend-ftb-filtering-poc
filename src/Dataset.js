@@ -114,7 +114,7 @@ export class Dataset extends React.Component {
         // Actual request
         const requestOptions = {
             method: 'GET',
-            Authorization: `Bearer ${process.env.REACT_APP_NOT_SECRET_CODE}`
+            Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
         };
         let connected = false;
         let demoResponse;
