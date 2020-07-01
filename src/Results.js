@@ -17,7 +17,7 @@ function WarningBanner(props) {
 
 export class Results extends React.Component {
 
-    ftbDomain = "http://99.80.12.125:10100/v6";
+    ftbDomain = "http://99.80.12.125:80/ftb-wrapper/v6";
 
     constructor(props) {
         super(props);

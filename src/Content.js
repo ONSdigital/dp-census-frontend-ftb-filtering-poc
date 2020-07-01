@@ -18,7 +18,7 @@ export class Content extends React.Component {
     // ONS instance
     //ftbDomain = "http://99.80.12.125:10100/v6";
     // Sensible code instance
-    ftbDomain = "http://99.80.12.125:10100/v6";
+    ftbDomain = "http://99.80.12.125:80/ftb-wrapper/v6";
 
     state = {
         "results": [],

@@ -26,7 +26,7 @@ export class Dataset extends React.Component {
     };
 
     dimensionClickedFuncs = [];
-    ftbDomain = "http://99.80.12.125:10100/v6";
+    ftbDomain = "http://99.80.12.125:80/ftb-wrapper/v6";
 
     constructor(props) {
         super(props);
