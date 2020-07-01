@@ -38,9 +38,9 @@ export class Results extends React.Component {
         // Actual request
         const requestOptions = {
             method: 'GET',
-            headers: {
+            headers: new Headers({
                 Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
-            }
+            })
         };
         let connected = false;
         let demoResponse;

@@ -43,8 +43,10 @@ export class Content extends React.Component {
         // Actual request
         const requestOptions = {
             method: 'GET',
-            Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
-        };
+            headers: new Headers({
+                Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
+            })
+        }
         let connected = false;
         let data;
         try {
