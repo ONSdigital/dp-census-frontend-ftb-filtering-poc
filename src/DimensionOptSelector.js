@@ -9,6 +9,7 @@ export class DimensionOptSelector extends React.Component {
         super(props);
         // this.checkChanged = this.checkChanged.bind(this);
         this.saveSelection = this.saveSelection.bind(this);
+        this.addAll = this.addAll.bind(this);
         this.state = {
             filters: this.props.filters
 
@@ -37,6 +38,16 @@ export class DimensionOptSelector extends React.Component {
     saveSelection() {
         this.props.filterUpdate(this.props.dimCodeBook.name, this.state.filters);
         this.props.closeDimensionOptMenu();
+    }
+
+    addAll() {
+        let filters = this.state.filters;
+        for (let i =0; i < this.props.dimCodeBook.codes.length; i++){
+            filters[this.props.dimCodeBook.codes[i]] = true
+        }
+        this.setState({
+            filters: filters
+        });
     }
 
     render() {
@@ -70,8 +81,8 @@ export class DimensionOptSelector extends React.Component {
                             className="visuallyhidden">Aggregate</span></h2>
                     </legend>
                     <input name="save-and-return" className="hidden" type="submit" value="Save and return"/>
-                    <input className="btn btn--link underline-link js-filter add-all" type="submit" value="Add all"
-                           name="add-all" id="add-all"
+                    <input className="btn btn--link underline-link js-filter add-all" type="button" value="Add all"
+                           name="add-all" id="add-all" onClick={(this.addAll)}
                            aria-label="Add all Aggregate in this list to your saved items"/>&nbsp; &nbsp;
                     <input className="btn btn--link underline-link js-filter remove-list js-hidden" type="submit"
                            value="Remove all" name="remove-all" id="remove-all"

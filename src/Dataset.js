@@ -34,6 +34,7 @@ export class Dataset extends React.Component {
         this.filterUpdateFunc = this.filterUpdateFunc.bind(this);
         this.closeDimensionOptMenu = this.closeDimensionOptMenu.bind(this);
         this.getFilterQuery = this.getFilterQuery.bind(this);
+        this.clearAll = this.clearAll.bind(this);
         this.state = {
             filter: {},
             ruleRootVariable: ""
@@ -121,7 +122,7 @@ export class Dataset extends React.Component {
         let connected = false;
         let demoResponse;
         try {
-            const response = await fetch(this.ftbDomain + "/codebook" + this.props.match.params.name, requestOptions);
+            const response = await fetch(this.ftbDomain + "/codebook/" + this.props.match.params.name, requestOptions);
             // Actual
             demoResponse = await response.json();
             if (response.status === 200) {
@@ -159,6 +160,16 @@ export class Dataset extends React.Component {
             ruleRootVariable: demoResponse.dataset.ruleRootVariable
         }));
 
+    }
+
+    clearAll() {
+        let filter = this.state.filter;
+        for (const dimension in this.state.filter) {
+            for (const dimOpt in this.state.filter[dimension]) {
+                filter[dimension][dimOpt] = false;
+            }
+        }
+        this.setState({filter: filter})
     }
 
     getFilterSelection(index) {
@@ -214,6 +225,7 @@ export class Dataset extends React.Component {
                     dimensions={dimensions}
                     getFilterQuery={this.getFilterQuery}
                     canFilter={this.state.canFilter}
+                    clearAll={this.clearAll}
                 />
                 {dimOptSelector}
                 <Footer/>

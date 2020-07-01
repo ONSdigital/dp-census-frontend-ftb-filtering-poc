@@ -1,21 +1,33 @@
 .top-logo {
-  display: inline-block;
-  padding-right: 40px;
+    display: inline-block;
+    padding-right: 40px;
+}
+
+.restart {
+    display: inline-block;
+    float: right;
+    font-size: 22px;
+    font-weight: bold;
 }
 
 
-.search-bar{
-  border: 3px solid #58595B;
+.search-bar {
+    border: 3px solid #58595B;
 }
 
-.search-label{
-  color: #323132;
+.search-label {
+    color: #323132;
 }
 
-.footer{
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: #58595B;
-  text-align: center;
+.search-result-item{
+  font-size: 21px;
+  padding: 10px 0px 10px 0px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #58595B;
+    text-align: center;
 }

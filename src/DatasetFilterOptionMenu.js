@@ -28,8 +28,10 @@ export class DatasetFilterOptionMenu extends React.Component {
                 <ul className="list--neutral filter-overview">
                     <li className="margin-left--0 padding-bottom--2 padding-top--0 padding-right--2 width-lg--56">
                         <button className="float-el--right-md float-el--right-sm float-el--right-lg"
-                                href="/filters/c53f1a7c-ecf1-4abf-a104-f8f00cd57994/dimensions/clear-all">Clear
-                            filters
+                                href="/filters/c53f1a7c-ecf1-4abf-a104-f8f00cd57994/dimensions/clear-all"
+                        onClick={() => {this.props.clearAll()}}
+                        >
+                            Clear filters
                         </button>
                     </li>
                     {this.props.dimensions}
