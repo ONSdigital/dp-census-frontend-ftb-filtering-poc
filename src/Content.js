@@ -82,7 +82,7 @@ export class Content extends React.Component {
         if (this.state.results.length > 0) {
             displayList = this.state.results.map(function (singleResult) {
                 return <li className="col col--md-34 col--lg-50 search-results__item search-result-item"><a
-                    href={document.location.href + "/dataset/" + singleResult.name}>{singleResult.name}</a>
+                    href={`${document.location.origin}/dp-census-frontend-ftb-filtering-poc/dataset/${singleResult.name}`}>{singleResult.name}</a>
                     <p className="search-results__meta">{singleResult.description}</p></li>;
             });
         }
