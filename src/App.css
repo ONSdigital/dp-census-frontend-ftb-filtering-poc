@@ -31,3 +31,13 @@
     background-color: #58595B;
     text-align: center;
 }
+
+.condition-warn {
+  font-size: 18px;
+  padding: 1px;
+  margin: 1px;
+  color: darkred;
+}
+#root{
+  padding-bottom:60px;
+}

@@ -43,6 +43,7 @@ export class DatasetFilterOptionMenu extends React.Component {
                                className={previewDownloadClass}
                                name="preview-and-download"
                                onClick={this.applyFilters}
+                               disabled={!this.props.canFilter}
                         />
                     </form>
                 </div>

@@ -15,10 +15,7 @@ function WarningBanner(props) {
 }
 
 export class Content extends React.Component {
-    // ONS instance
-    //ftbDomain = "http://99.80.12.125:10100/v6";
-    // Sensible code instance
-    ftbDomain = "http://99.80.12.125:80/ftb-wrapper/v6";
+    ftbDomain = "http://99.80.12.125:10100/v6";
 
     state = {
         "results": [],
@@ -45,7 +42,6 @@ export class Content extends React.Component {
             method: 'GET',
             headers: new Headers({
                 Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
-                Test: "turd"
             })
         };
         let connected = false;

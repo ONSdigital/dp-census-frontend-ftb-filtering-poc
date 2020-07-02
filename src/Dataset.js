@@ -26,7 +26,7 @@ export class Dataset extends React.Component {
     };
 
     dimensionClickedFuncs = [];
-    ftbDomain = "http://99.80.12.125:80/ftb-wrapper/v6";
+    ftbDomain = "http://99.80.12.125:10100/v6";
 
     constructor(props) {
         super(props);
@@ -35,6 +35,7 @@ export class Dataset extends React.Component {
         this.closeDimensionOptMenu = this.closeDimensionOptMenu.bind(this);
         this.getFilterQuery = this.getFilterQuery.bind(this);
         this.clearAll = this.clearAll.bind(this);
+        this.checkMapAndVarSelection = this.checkMapAndVarSelection.bind(this);
         this.state = {
             filter: {},
             ruleRootVariable: ""
@@ -60,7 +61,7 @@ export class Dataset extends React.Component {
             let dimOptString = "";
             for (const dimOpt in this.state.filter[dim]) {
                 if (this.state.filter[dim][dimOpt] === true) {
-                    dimOptString += `${dimOpt},`;
+                    dimOptString += `${encodeURIComponent(dimOpt)},`;
                 }
             }
             if (dimOptString !== "") {
@@ -81,11 +82,47 @@ export class Dataset extends React.Component {
         this.setState({filter: filterObj})
     }; // TODO implement filter updateFuncs - save which codes and vars selected in this state
 
+    checkMapAndVarSelection() {
+        for (let i = 0; i < this.state.codeBook.codebook.length; i++) {
+            // Property is a map
+            if (this.state.codeBook.codebook[i].mapFrom != null) {
+
+                // Are maps selected?
+                let areMapFiltersApplied = false;
+                if (this.state.filter[this.state.codeBook.codebook[i].name] != null) {
+                    let filter = this.state.filter[this.state.codeBook.codebook[i].name];
+                    for (const key in filter) {
+                        if (filter[key] === true) {
+                            areMapFiltersApplied = true;
+                        }
+                    }
+                }
+                // if so then has a filter been selected as well?
+                if (areMapFiltersApplied) {
+                    let masterFilterName = this.state.codeBook.codebook[i].mapFrom;
+                    let filterToCheck = this.state.filter[masterFilterName];
+                    for (const key in filterToCheck) {
+                        if (filterToCheck[key] === true) {
+                            //Can't have both a map and a filter...
+                            return false;
+                        }
+
+                    }
+                }
+
+            }
+
+        }
+        return true
+    }
+
     closeDimensionOptMenu() {
         let canFilter = false;
         for (const dimOpt in this.state.filter[this.state.ruleRootVariable]) {
             if (this.state.filter[this.state.ruleRootVariable][dimOpt] === true) {
-                canFilter = true;
+                if (this.checkMapAndVarSelection()) {
+                    canFilter = true;
+                }
             }
         }
 
@@ -169,7 +206,10 @@ export class Dataset extends React.Component {
                 filter[dimension][dimOpt] = false;
             }
         }
-        this.setState({filter: filter})
+        this.setState({
+            filter: filter,
+            canFilter: false
+        })
     }
 
     getFilterSelection(index) {
@@ -218,7 +258,11 @@ export class Dataset extends React.Component {
                 <Header/>
                 <WarningBanner warn={this.state.warning}/>
                 <h1 className="wrapper">Dataset: {this.props.match.params.name}</h1>
-                <div className="wrapper"> rootRuleVariable must be selected: {this.state.ruleRootVariable}</div>
+                <div className="wrapper">
+                    <p className="condition-warn">rootRuleVariable must be selected: {this.state.ruleRootVariable}</p>
+                    <p className="condition-warn">If a mapping is available then only select the mapping or the
+                        original. Not both.</p>
+                </div>
                 <DatasetFilterOptionMenu
                     datasetName={this.props.match.params.name}
                     showDim={this.state.indexAddingDimOpt < 0}
