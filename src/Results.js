@@ -61,9 +61,9 @@ export class Results extends React.Component {
     }
 
     render() {
-        return <div>
+        return <div className="page-container">
             <Header/>
-            <div className="wrapper">
+            <div className="wrapper content">
                 <WarningBanner warn={this.state.warning}/>
                 <br/>
                 <div><pre>{JSON.stringify(this.state.results, null, 2)}</pre></div>

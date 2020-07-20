@@ -8,7 +8,7 @@ import {Footer} from "./Footer";
 export class DatasetList extends React.Component {
 
     render() {
-        return <div>
+        return <div className="page-container">
             <Header/>
             <Content/>
             <Footer/>

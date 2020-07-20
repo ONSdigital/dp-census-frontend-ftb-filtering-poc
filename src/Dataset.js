@@ -234,11 +234,12 @@ export class Dataset extends React.Component {
             for (let i = 0; i < codeBook.length; i++) {
                 let filterSelection = this.getFilterSelection(i);
 
-
+                let isMap = this.state.codeBook.codebook[i].mapFrom != null;
                 let singleDim = <DatasetDim
                     label={codeBook[i].label}
                     dimClicked={this.dimensionClickedFuncs[i]}
                     filterSelection={filterSelection}
+                    isMap={isMap}
                 />;
                 dimensions.push(singleDim)
             }
@@ -254,24 +255,27 @@ export class Dataset extends React.Component {
             />
         }
         return (
-            <div>
+            <div className="page-container">
                 <Header/>
-                <WarningBanner warn={this.state.warning}/>
-                <h1 className="wrapper">Dataset: {this.props.match.params.name}</h1>
-                <div className="wrapper">
-                    <p className="condition-warn">rootRuleVariable must be selected: {this.state.ruleRootVariable}</p>
-                    <p className="condition-warn">If a mapping is available then only select the mapping or the
-                        original. Not both.</p>
+                <div className="content">
+                    <WarningBanner warn={this.state.warning}/>
+                    <h1 className="wrapper">Dataset: {this.props.match.params.name}</h1>
+                    <div className="wrapper">
+                        <p className="condition-warn">rootRuleVariable must be
+                            selected: {this.state.ruleRootVariable}</p>
+                        <p className="condition-warn">If a mapping is available then only select the mapping or the
+                            original. Not both.</p>
+                    </div>
+                    <DatasetFilterOptionMenu
+                        datasetName={this.props.match.params.name}
+                        showDim={this.state.indexAddingDimOpt < 0}
+                        dimensions={dimensions}
+                        getFilterQuery={this.getFilterQuery}
+                        canFilter={this.state.canFilter}
+                        clearAll={this.clearAll}
+                    />
+                    {dimOptSelector}
                 </div>
-                <DatasetFilterOptionMenu
-                    datasetName={this.props.match.params.name}
-                    showDim={this.state.indexAddingDimOpt < 0}
-                    dimensions={dimensions}
-                    getFilterQuery={this.getFilterQuery}
-                    canFilter={this.state.canFilter}
-                    clearAll={this.clearAll}
-                />
-                {dimOptSelector}
                 <Footer/>
             </div>
         )

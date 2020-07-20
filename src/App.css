@@ -19,9 +19,9 @@
     color: #323132;
 }
 
-.search-result-item{
-  font-size: 21px;
-  padding: 10px 0px 10px 0px;
+.search-result-item {
+    font-size: 21px;
+    padding: 10px 0px 10px 0px;
 }
 
 .footer {
@@ -32,12 +32,29 @@
     text-align: center;
 }
 
-.condition-warn {
-  font-size: 18px;
-  padding: 1px;
-  margin: 1px;
-  color: darkred;
+.page-container {
+    position: relative;
+    min-height: 100vh;
 }
-#root{
-  padding-bottom:60px;
+
+.content {
+    padding-bottom: 132px;
+}
+
+.condition-warn {
+    font-size: 18px;
+    padding: 1px;
+    margin: 1px;
+    color: darkred;
+}
+
+#root {
+    padding-bottom: 0px;
+}
+
+.filter-overview__add_bar {
+    border-left: thick solid #761212;
+    border-left-width: thick;
+    border-left-style: solid;
+    border-left-color: rgb(118, 18, 18);
 }

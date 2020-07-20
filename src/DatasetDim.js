@@ -10,8 +10,14 @@ export class DatasetDim extends React.Component {
             filterSelection = this.props.filterSelection.join(", ");
 
         }
+        let optionView = "white-background margin-left-md--2 margin-right-md--2 margin-right-sm--1 margin-left-sm--1 filter-overview__add";
+        if (this.props.isMap) {
+            optionView = "white-background margin-left-md--2 margin-right-md--2 margin-right-sm--1 margin-left-sm--1 filter-overview__add_bar";
+        }
+
+
         return <li id="filter-option"
-                   className="white-background margin-left-md--2 margin-right-md--2 margin-right-sm--1 margin-left-sm--1 filter-overview__add">
+                   className={optionView}>
             <div className="col--lg-56 min-height--10 padding-left-sm--0 padding-left-md--1">
                 <div className="col col--md-8 col--lg-8 min-height--4">
                     <a className="filter-overview__link--add"

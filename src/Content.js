@@ -87,7 +87,7 @@ export class Content extends React.Component {
         }
 
         return (
-            <div className="wrapper">
+            <div className="wrapper content">
                 <WarningBanner warn={this.state.warning}/>
                 <h1 className="wrapper">List of all datasets loaded in from FTB</h1>
                 <div className="search-results">
